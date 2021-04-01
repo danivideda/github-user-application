@@ -1,5 +1,6 @@
 package com.example.githubuserapplication
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,20 +9,24 @@ import com.bumptech.glide.Glide
 import com.example.githubuserapplication.databinding.ItemUserBinding
 
 class ListUserAdapter(val listUser: ArrayList<User>) : RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
-    class ListViewHolder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
+    private lateinit var onItemClickCallback: OnItemClickCallback
 
+    interface OnItemClickCallback {
+        fun onItemClicked(data: User)
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ListUserAdapter.ListViewHolder {
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
 
+    class ListViewHolder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ListUserAdapter.ListViewHolder(binding)
+        return ListViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ListUserAdapter.ListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val user = listUser[position] as User
 
         Glide.with(holder.itemView.context)
@@ -32,6 +37,10 @@ class ListUserAdapter(val listUser: ArrayList<User>) : RecyclerView.Adapter<List
         holder.binding.tvUsername.text = "@${user.username}"
         holder.binding.tvCompany.text = user.company
         holder.binding.tvRepoCount.text = "Repository: ${user.repo}"
+
+        holder.itemView.setOnClickListener {
+            onItemClickCallback.onItemClicked(listUser[holder.adapterPosition])
+        }
     }
 
     override fun getItemCount(): Int {

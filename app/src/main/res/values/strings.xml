@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GithubUserApplication</string>
+    <string name="app_name">Github User</string>
     <string name="name">Name</string>
     <string name="username">Username</string>
     <string name="repo">Repo</string>
@@ -7,4 +7,5 @@
     <string name="following">Following</string>
     <string name="company">Company</string>
     <string name="location">Location</string>
+    <string name="share_github_profile">Share Github Profile</string>
 </resources>
